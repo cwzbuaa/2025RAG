@@ -1,6 +1,6 @@
 # git操作指南
 
-* [开发环境配置_说明文件](doc_dev/md/01_开发环境配置.md)  
+* [git操作指南](doc_dev/md/git操作指南.md)  
 
 
 
