@@ -117,7 +117,7 @@ print(f"✅ 嵌入维度：{len(test_embedding)}")
 # ----------------------------
 # 3. 加载 FAISS 向量库
 # ----------------------------
-vectorstore = FAISS.load_local("faiss_index", embedding_model, allow_dangerous_deserialization=True)
+vectorstore = FAISS.load_local("../faiss_index", embedding_model, allow_dangerous_deserialization=True)
 print("✅ 向量库加载成功")
 
 # ----------------------------

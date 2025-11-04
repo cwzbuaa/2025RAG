@@ -29,7 +29,7 @@ test_embedding = embedding_model.embed_query("测试文本")
 # ----------------------------
 # 3. 加载 FAISS 向量库（使用相同的嵌入模型）
 # ----------------------------
-vectorstore = FAISS.load_local("faiss_index", embedding_model, allow_dangerous_deserialization=True)
+vectorstore = FAISS.load_local("../faiss_index", embedding_model, allow_dangerous_deserialization=True)
 
 # ----------------------------
 # 4. 配置 LLM（Qwen 模型）

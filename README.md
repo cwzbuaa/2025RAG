@@ -10,6 +10,8 @@
 ## 项目结构如下：
 rag_project/
 │
+├── git_instructions/             # git操作指南，自用
+│
 ├── data/                         # 存放原始文档与预处理结果
 │   ├── raw_docs/                 # 原始文档
 │   ├── cleaned_docs/             # 清洗后文本
@@ -20,8 +22,8 @@ rag_project/
 │   └── vector_store.faiss        # 向量库文件
 │
 ├── retriever-generator/          # 检索模块
-│   ├── Augmented_Generation.py              # 基础检索实现
-│   ├── Rerank-Augmented_Generation.py       # ColBERT精排（进阶）
+│   ├── Augmented_Generation.py   # 基础检索实现
+│   ├── Rerank_A_G.py             # ColBERT精排（进阶）(重排?)
 │   ├── config.yaml               # 参数配置
 │   └── model_utils.py
 │

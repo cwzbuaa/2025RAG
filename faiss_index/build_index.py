@@ -14,7 +14,7 @@ import re
 # ----------------------------
 # 1. 加载你的 JSONL 文件（适配你的字段）
 # ----------------------------
-file_path = "./howtocook/chunked_corpus_length.jsonl"
+file_path = "../data/howtocook/chunked_corpus_length.jsonl"
 
 def clean_text_for_embedding(text: str) -> str:
     # 移除所有控制字符（除了 \n \r \t）
