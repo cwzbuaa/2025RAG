@@ -6,3 +6,40 @@
 
 * [git操作指南](git_instructions/doc_dev/md/git操作指南.md)  
 你好，这是一个GitHub项目
+
+## 项目结构如下：
+rag_project/
+│
+├── data/                         # 存放原始文档与预处理结果
+│   ├── raw_docs/                 # 原始文档
+│   ├── cleaned_docs/             # 清洗后文本
+│   └── document_chunks.jsonl     # 分块结果
+│
+├── faiss_index/                        # 索引构建模块
+│   ├── build_index.py            # 构建FAISS/Chroma索引
+│   └── vector_store.faiss        # 向量库文件
+│
+├── retriever-generator/          # 检索模块
+│   ├── Augmented_Generation.py              # 基础检索实现
+│   ├── Rerank-Augmented_Generation.py       # ColBERT精排（进阶）
+│   ├── config.yaml               # 参数配置
+│   └── model_utils.py
+│
+├── eval/                         # 评估模块
+│   ├── evaluate_recall.py        # 离线指标（Top-k召回率等）
+│   ├── ragas_eval.py             # RAGAS自动评估
+│   └── error_analysis.ipynb      # 失败案例分析
+│
+├── demo/                         # 展示模块
+│   ├── app_streamlit.py          # Web demo
+│   ├── app_cli.py                # CLI demo（备用）
+│   └── demo_data.json            # 示例问题与结果
+│
+├── report/                       # 文档输出
+│   ├── final_report.docx
+│   ├── presentation.pptx
+│   └── figures/                  # 架构图、性能曲线等
+│
+├── requirements.txt
+├── README.md                     # 项目说明与运行指南
+└── run_all.sh                    # 一键运行脚本
