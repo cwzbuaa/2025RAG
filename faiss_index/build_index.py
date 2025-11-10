@@ -2,9 +2,8 @@ import json
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.llms import OpenAI
-from langchain.prompts import PromptTemplate
-from langchain.schema import Document
-from langchain.chains import RetrievalQA
+from langchain_core.prompts import PromptTemplate
+from langchain_core.documents import Document
 import time
 from openai import OpenAI
 from langchain_community.vectorstores import FAISS
@@ -14,7 +13,7 @@ import re
 # ----------------------------
 # 1. 加载你的 JSONL 文件（适配你的字段）
 # ----------------------------
-file_path = "../data/howtocook/chunked_corpus_length.jsonl"
+file_path = "data/chunked_corpus_fuzi/chunked_corpus.jsonl"
 
 def clean_text_for_embedding(text: str) -> str:
     # 移除所有控制字符（除了 \n \r \t）
@@ -31,7 +30,7 @@ def load_chunks_from_jsonl(file_path):
             if not line.strip():
                 continue
             data = json.loads(line.strip())
-            page_content = clean_text_for_embedding(data["content"])
+            page_content = clean_text_for_embedding(data["child_content"])
             metadata = data.get("metadata", {})
             metadata["chunk_id"] = data.get("chunk_id", "")
             doc = Document(page_content=page_content, metadata=metadata)
@@ -118,4 +117,4 @@ if not failed_indices:
 # print("FAISS 向量库构建完成！")
 
 # 可选：保存到本地，下次直接加载（避免重复嵌入）
-vectorstore.save_local("faiss_index")
+vectorstore.save_local("faiss_index2")

@@ -1,12 +1,12 @@
 import json
 import requests
 from langchain_community.vectorstores import FAISS
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI
 from pydantic.v1 import BaseModel, Field
 from typing import List, Optional
-from langchain.schema import Document
+from langchain_core.documents import Document
 import time
 from langchain_core.retrievers import BaseRetriever
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
