@@ -2,4 +2,45 @@ rag_env/
 /test.py
 RAG_data-precwz/
 RAG-data-precwz/
+<<<<<<< HEAD
 selfwork/
+=======
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# History files
+.history/
+
+# Streamlit
+.streamlit/
+
+# FAISS index files (large binary files - optional, uncomment if you don't want to commit them)
+# *.faiss
+# *.pkl
+
+# Logs
+*.log
+>>>>>>> 89b0d01833cf273212f26c90cc3abd4c733480d8
