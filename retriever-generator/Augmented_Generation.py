@@ -18,7 +18,7 @@ from langchain_community.embeddings import DashScopeEmbeddings
 # ----------------------------
 embedding_model = DashScopeEmbeddings(
     model="text-embedding-v4",  # 使用 1024 维度的模型
-    dashscope_api_key="sk-"
+    dashscope_api_key="sk-f1d25d991a2f4b1699daf8bc3c8d880b"
 )
 
 # ----------------------------
@@ -29,13 +29,13 @@ test_embedding = embedding_model.embed_query("测试文本")
 # ----------------------------
 # 3. 加载 FAISS 向量库（使用相同的嵌入模型）
 # ----------------------------
-vectorstore = FAISS.load_local("../faiss_index", embedding_model, allow_dangerous_deserialization=True)
+vectorstore = FAISS.load_local("faiss_index2", embedding_model, allow_dangerous_deserialization=True)
 
 # ----------------------------
 # 4. 配置 LLM（Qwen 模型）
 # ----------------------------
 llm = ChatOpenAI(
-    api_key="sk-",
+    api_key="sk-f1d25d991a2f4b1699daf8bc3c8d880b",
     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
     model="qwen-flash",
     temperature=0.1
@@ -62,7 +62,7 @@ PROMPT = PromptTemplate(
 qa_chain = RetrievalQA.from_chain_type(
     llm=llm,
     chain_type="stuff",
-    retriever=vectorstore.as_retriever(search_kwargs={"k": 3}),
+    retriever=vectorstore.as_retriever(search_kwargs={"k": 10}),
     chain_type_kwargs={"prompt": PROMPT},
     return_source_documents=True
 )
@@ -71,7 +71,7 @@ qa_chain = RetrievalQA.from_chain_type(
 # 6. 测试问答
 # ----------------------------
 if __name__ == "__main__":
-    query = "番茄炒蛋怎么做"
+    query = "意大利面应该拌32号混凝土吗"
     print(f"问题：{query}\n")
     
 

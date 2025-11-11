@@ -104,7 +104,7 @@ from langchain_community.embeddings import DashScopeEmbeddings
 
 embedding_model = DashScopeEmbeddings(
     model="text-embedding-v4",  # 使用 1024 维度的模型
-    dashscope_api_key="sk-"
+    dashscope_api_key="sk-f1d25d991a2f4b1699daf8bc3c8d880b"
 )
 print("✅ 嵌入模型初始化成功")
 
@@ -117,14 +117,14 @@ print(f"✅ 嵌入维度：{len(test_embedding)}")
 # ----------------------------
 # 3. 加载 FAISS 向量库
 # ----------------------------
-vectorstore = FAISS.load_local("../faiss_index", embedding_model, allow_dangerous_deserialization=True)
+vectorstore = FAISS.load_local("faiss_index", embedding_model, allow_dangerous_deserialization=True)
 print("✅ 向量库加载成功")
 
 # ----------------------------
 # 4. 配置千问重排链
 # ----------------------------
 rerank_chain = RerankChain(
-    api_key="sk-",
+    api_key="sk-f1d25d991a2f4b1699daf8bc3c8d880b",
     model="qwen3-rerank"
 )
 print("✅ 重排链配置成功")
@@ -135,7 +135,7 @@ print("✅ 重排链配置成功")
 rerank_retriever = RerankRetriever(
     vectorstore=vectorstore,
     rerank_chain=rerank_chain,
-    top_k=5,        # 先召回 5 个文档
+    top_k=7,        # 先召回 5 个文档
     rerank_top_n=3  # 重排后返回 3 个最相关文档
 )
 print("✅ 重排检索器创建成功")
@@ -144,7 +144,7 @@ print("✅ 重排检索器创建成功")
 # 6. 配置 LLM（Qwen 模型）
 # ----------------------------
 llm = ChatOpenAI(
-    api_key="sk-",
+    api_key="sk-f1d25d991a2f4b1699daf8bc3c8d880b",
     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
     model="qwen-flash",
     temperature=0.1,
@@ -180,7 +180,7 @@ qa_chain = RetrievalQA.from_chain_type(
 # 8. 测试问答
 # ----------------------------
 if __name__ == "__main__":
-    query = "厨房中需要常备哪些调料？"
+    query = "适合健身的低脂餐"
     print(f"问题：{query}\n")
     
 
