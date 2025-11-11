@@ -4,15 +4,15 @@
 
 ## 📋 目录
 
-- [项目介绍](#项目介绍)
-- [功能特性](#功能特性)
-- [技术栈](#技术栈)
-- [安装步骤](#安装步骤)
-- [配置说明](#配置说明)
-- [使用方法](#使用方法)
-- [项目结构](#项目结构)
-- [性能监控](#性能监控)
-- [常见问题](#常见问题)
+- [项目介绍](#-项目介绍)
+- [功能特性](#-功能特性)
+- [技术栈](#-技术栈)
+- [安装步骤](#-安装步骤)
+- [配置说明](#-配置说明)
+- [使用方法](#-使用方法)
+- [项目结构](#-项目结构)
+- [性能监控](#-性能监控)
+- [常见问题](#-常见问题)
 
 ## 🎯 项目介绍
 
@@ -149,71 +149,7 @@ API_KEY = "sk-your-api-key-here"
 
 ## 🚀 使用方法
 
-### 方式一：在线使用（推荐）
-
-#### 使用 Streamlit Cloud 部署（推荐）
-
-**Streamlit Cloud** 是 Streamlit 官方提供的免费云服务，可以直接从 GitHub 部署你的应用。
-
-**部署步骤：**
-
-1. **访问 Streamlit Cloud**
-   - 打开 [https://streamlit.io/cloud](https://streamlit.io/cloud)
-   - 使用 GitHub 账号登录（需要授权 Streamlit Cloud 访问你的仓库）
-
-2. **创建新应用**
-   - 点击 "New app" 按钮
-   - 选择你的 GitHub 仓库：`cwzbuaa/2025RAG`
-   - 设置分支：`main`
-   - 设置应用路径：`retriever-generator/app.py`
-   - 点击 "Deploy" 开始部署
-
-3. **等待部署完成**
-   - 首次部署可能需要几分钟时间
-   - Streamlit Cloud 会自动安装 `requirements.txt` 中的依赖
-
-4. **配置 API Key（重要）**
-   - 部署前，确保在 `retriever-generator/agent_backend.py` 中设置了 API Key
-   - 或者使用 Streamlit Cloud 的 Secrets 功能（推荐）：
-     - 在应用设置中找到 "Secrets" 选项
-     - 添加 `DASH_API_KEY` 环境变量
-     - 修改代码使用 `st.secrets["DASH_API_KEY"]` 读取
-
-5. **访问应用**
-   - 部署完成后，Streamlit Cloud 会提供一个公开的 URL
-   - 格式：`https://your-app-name.streamlit.app`
-   - 你可以将这个链接分享给任何人使用
-
-**优点：**
-- ✅ 完全免费（个人使用）
-- ✅ 无需下载代码，直接在浏览器中使用
-- ✅ 自动更新（代码推送到 GitHub 后自动重新部署）
-- ✅ 公开访问链接，可分享给他人
-- ✅ 无需服务器配置和维护
-- ✅ 支持自定义域名（付费版）
-
-**注意事项：**
-- ⚠️ 首次部署需要几分钟时间
-- ⚠️ 确保 API Key 已正确配置
-- ⚠️ 确保 `requirements.txt` 包含所有依赖
-- ⚠️ 确保向量索引文件已上传到 GitHub（如果文件较大，可能需要使用 Git LFS）
-
-#### 使用 Hugging Face Spaces
-
-1. **创建 Space**
-   - 访问 [https://huggingface.co/spaces](https://huggingface.co/spaces)
-   - 点击 "Create new Space"
-   - 选择 "Streamlit" SDK
-   - 连接到你的 GitHub 仓库
-
-2. **配置应用**
-   - 设置应用路径为 `retriever-generator/app.py`
-   - 配置依赖文件 `requirements.txt`
-
-3. **部署**
-   - 点击 "Create Space" 完成部署
-
-### 方式二：本地运行
+### 本地运行
 
 #### 启动应用
 
@@ -242,26 +178,6 @@ streamlit run app.py
 4. **开始新对话**
    - 点击侧边栏的"🔄 开始新对话"按钮
    - 清空对话历史，开始新的会话
-
-### 使用示例
-
-**示例 1：查询具体菜谱**
-```
-用户：宫保鸡丁怎么做？
-系统：根据检索到的菜谱，提供详细的食材清单和烹饪步骤
-```
-
-**示例 2：根据食材推荐**
-```
-用户：我只有鸡蛋和番茄，能做什么？
-系统：推荐番茄炒蛋等相关菜谱
-```
-
-**示例 3：烹饪技巧**
-```
-用户：什么是焯水？
-系统：解释焯水的概念和用途
-```
 
 ## 📁 项目结构
 
