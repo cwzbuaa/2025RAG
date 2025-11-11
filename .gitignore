@@ -2,10 +2,8 @@ rag_env/
 /test.py
 RAG_data-precwz/
 RAG-data-precwz/
-<<<<<<< HEAD
 selfwork/
-=======
-
+selfwork/
 # Python
 __pycache__/
 *.py[cod]
@@ -43,4 +41,3 @@ ENV/
 
 # Logs
 *.log
->>>>>>> 89b0d01833cf273212f26c90cc3abd4c733480d8
