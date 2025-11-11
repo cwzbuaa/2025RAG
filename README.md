@@ -14,48 +14,6 @@
 - [性能监控](#性能监控)
 - [常见问题](#常见问题)
 
-<<<<<<< HEAD
-## 项目结构如下：
-
-* [git操作指南](git_instructions/doc_dev/md/git操作指南.md)  
-rag_project/  
-│  
-├── git_instructions/             # git操作指南，自用  
-│  
-├── data/                         # 存放原始文档与预处理结果  
-│   ├── raw_docs/                 # 原始文档  
-│   ├── cleaned_docs/             # 清洗后文本  
-│   └── document_chunks.jsonl     # 分块结果  
-│  
-├── faiss_index/                  # 索引构建模块  
-│   ├── build_index.py            # 构建FAISS/Chroma索引  
-│   └── vector_store.faiss        # 向量库文件  
-│  
-├── retriever-generator/          # 检索模块  
-│   ├── Augmented_Generation.py   # 基础检索实现  
-│   ├── Rerank_A_G.py             # ColBERT精排（进阶）(重排?)  
-│   ├── config.yaml               # 参数配置  
-│   └── model_utils.py  
-│  
-├── eval/                         # 评估模块  
-│   ├── evaluate_recall.py        # 离线指标（Top-k召回率等）  
-│   ├── ragas_eval.py             # RAGAS自动评估  
-│   └── error_analysis.ipynb      # 失败案例分析  
-│  
-├── demo/                         # 展示模块  
-│   ├── app_streamlit.py          # Web demo  
-│   ├── app_cli.py                # CLI demo（备用）  
-│   └── demo_data.json            # 示例问题与结果  
-│  
-├── report/                       # 文档输出  
-│   ├── final_report.docx  
-│   ├── presentation.pptx  
-│   └── figures/                  # 架构图、性能曲线等  
-│  
-├── requirements.txt  
-├── README.md                     # 项目说明与运行指南  
-└── run_all.sh                    # 一键运行脚本  
-=======
 ## 🎯 项目介绍
 
 航小厨是一个智能烹饪助手，采用 RAG（Retrieval-Augmented Generation）架构，结合了：
@@ -444,4 +402,3 @@ rerank_model = st.selectbox(
 ---
 
 **祝您使用愉快！🍳**
->>>>>>> 89b0d01833cf273212f26c90cc3abd4c733480d8
