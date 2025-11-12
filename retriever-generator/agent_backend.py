@@ -12,8 +12,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
-from pydantic.v1 import BaseModel, Field
-from pydantic import ConfigDict
+from pydantic import Field, ConfigDict, PrivateAttr
 
 # --- LangChain Agent 组件 ---
 from langchain_core.tools import Tool
@@ -80,7 +79,7 @@ class RerankRetriever(BaseRetriever):
     rerank_chain: object = Field(default=None, description="重排链")
     top_k: int = Field(default=5, description="先召回的文档数量")
     rerank_top_n: int = Field(default=3, description="重排后返回的文档数量")
-    retrieval_times: List[float] = Field(default_factory=list, description="记录所有检索时间")
+    _retrieval_times: List[float] = PrivateAttr(default_factory=list)
     
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -107,20 +106,20 @@ class RerankRetriever(BaseRetriever):
         
         # 记录检索时间
         retrieval_time = time.time() - retrieval_start
-        self.retrieval_times.append(retrieval_time)
+        self._retrieval_times.append(retrieval_time)
         
         return reranked_docs
     
     def get_total_retrieval_time(self):
         """获取总检索时间"""
-        return sum(self.retrieval_times)
+        return sum(self._retrieval_times)
     
     def reset_retrieval_times(self):
         """重置检索时间记录"""
-        self.retrieval_times = []
+        self._retrieval_times = []
 
 # 注意：API key 在代码中配置
-API_KEY = "sk-"  # 在这里设置你的 API key
+API_KEY = ""  # 在这里设置你的 API key
 
 # 注意：由于需要动态参数，不使用@st.cache_resource装饰器
 def load_agent_executor(
