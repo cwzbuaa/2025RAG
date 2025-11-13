@@ -3,7 +3,9 @@ import numpy as np
 from pathlib import Path
 import time
 import requests
-from typing import List
+from typing import List, Dict, Tuple
+import json
+import re
 
 # --- LangChain 核心组件 ---
 from langchain_openai import ChatOpenAI
@@ -12,7 +14,8 @@ from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
-from pydantic import Field, ConfigDict, PrivateAttr
+from pydantic.v1 import BaseModel, Field
+from pydantic import ConfigDict
 
 # --- LangChain Agent 组件 ---
 from langchain_core.tools import Tool
@@ -79,7 +82,7 @@ class RerankRetriever(BaseRetriever):
     rerank_chain: object = Field(default=None, description="重排链")
     top_k: int = Field(default=5, description="先召回的文档数量")
     rerank_top_n: int = Field(default=3, description="重排后返回的文档数量")
-    _retrieval_times: List[float] = PrivateAttr(default_factory=list)
+    retrieval_times: List[float] = Field(default_factory=list, description="记录所有检索时间")
     
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -106,20 +109,20 @@ class RerankRetriever(BaseRetriever):
         
         # 记录检索时间
         retrieval_time = time.time() - retrieval_start
-        self._retrieval_times.append(retrieval_time)
+        self.retrieval_times.append(retrieval_time)
         
         return reranked_docs
     
     def get_total_retrieval_time(self):
         """获取总检索时间"""
-        return sum(self._retrieval_times)
+        return sum(self.retrieval_times)
     
     def reset_retrieval_times(self):
         """重置检索时间记录"""
-        self._retrieval_times = []
+        self.retrieval_times = []
 
 # 注意：API key 在代码中配置
-API_KEY = ""  # 在这里设置你的 API key
+API_KEY = "sk"  # 在这里设置你的 API key
 
 # 注意：由于需要动态参数，不使用@st.cache_resource装饰器
 def load_agent_executor(
@@ -150,12 +153,179 @@ def load_agent_executor(
 
     # 2. 加载 FAISS 向量库
     vectorstore = FAISS.load_local(
-        "retriever-generator/faiss_index4", 
+        "retriever-generator/faiss_index3", 
         embedding_model, 
         allow_dangerous_deserialization=True
     )
 
-    # 3. 根据是否启用重排创建不同的检索器
+    # 3. 载入语料索引（用于父文档提升与溯源）
+    corpus_path = Path(__file__).resolve().parents[1] / "data" / "chunked_corpus_fuzi" / "chunked_corpus.jsonl"
+    docid_to_parent: Dict[str, str] = {}
+    docid_to_meta: Dict[str, Dict] = {}
+    child_to_docid: Dict[str, str] = {}
+    child_prefix_to_candidates: Dict[str, List[Tuple[str, str]]] = {}
+
+    if corpus_path.exists():
+        with corpus_path.open("r", encoding="utf-8") as f:
+            for line in f:
+                try:
+                    item = json.loads(line)
+                except Exception:
+                    continue
+                doc_id = item.get("doc_id")
+                child_content = item.get("child_content", "")
+                parent_content = item.get("parent_content", "")
+                meta = item.get("metadata", {}) or {}
+                if not doc_id:
+                    continue
+                if parent_content:
+                    docid_to_parent[doc_id] = parent_content
+                docid_to_meta[doc_id] = meta
+                if child_content:
+                    child_to_docid[child_content] = doc_id
+                    prefix = child_content[:120]
+                    child_prefix_to_candidates.setdefault(prefix, []).append((doc_id, child_content))
+        print(f"✅ 语料映射加载完成：doc_id={len(docid_to_parent)}, child条目={len(child_to_docid)}")
+    else:
+        print(f"⚠️ 未找到语料文件：{corpus_path}")
+
+    def find_doc_id_by_child(text: str) -> str:
+        """根据子块内容查找 doc_id，先精确匹配，再前缀候选匹配。"""
+        if text in child_to_docid:
+            return child_to_docid[text]
+        prefix = text[:120]
+        candidates = child_prefix_to_candidates.get(prefix, [])
+        for cid, full in candidates:
+            if text == full or text in full or full in text:
+                return cid
+        return ""
+
+    def extract_key_sections(parent_text: str) -> Dict[str, str]:
+        """从父文档中提取关键段：标题、食材（必备原料和工具）、操作步骤。"""
+        sections = {"title": "", "ingredients": "", "steps": ""}
+        lines = parent_text.splitlines()
+        # 标题
+        if lines:
+            first = lines[0].strip()
+            if first.startswith("#"):
+                sections["title"] = first.lstrip("# ").strip()
+        # 简单规则抽取
+        text = parent_text
+        # 食材段
+        m_ing = re.search(r"##\s*必备原料和工具[\s\S]*?(?=\n##\s|\Z)", text)
+        if m_ing:
+            sections["ingredients"] = m_ing.group(0).strip()
+        # 操作/步骤段
+        m_steps = re.search(r"##\s*(操作|步骤)[\s\S]*?(?=\n##\s|\Z)", text)
+        if m_steps:
+            sections["steps"] = m_steps.group(0).strip()
+        return sections
+
+    def enrich_and_dedupe(docs: List[Document]) -> List[Document]:
+        """将命中子块提升为父文档关键段，按 doc_id 去重并保留最高分。"""
+        best_by_doc: Dict[str, Tuple[float, Document]] = {}
+        for d in docs:
+            score = 0.0
+            if isinstance(d.metadata, dict):
+                score = float(d.metadata.get("score", 0.0) or 0.0)
+            child_text = d.page_content or ""
+            doc_id = d.metadata.get("doc_id") if isinstance(d.metadata, dict) else None
+            if not doc_id:
+                doc_id = find_doc_id_by_child(child_text)
+            title = ""
+            source = ""
+            parent_text = ""
+            if doc_id and doc_id in docid_to_parent:
+                parent_text = docid_to_parent.get(doc_id, "")
+                meta = docid_to_meta.get(doc_id, {}) or {}
+                title = meta.get("title", "")
+                source = meta.get("source", "")
+                ks = extract_key_sections(parent_text)
+                # 组装 enriched 内容（限制长度以控制 tokens）
+                enriched_parts = []
+                if title:
+                    enriched_parts.append(f"# {title}")
+                enriched_parts.append("## 子块摘录\n" + (child_text[:800] + ("..." if len(child_text) > 800 else "")))
+                if ks.get("ingredients"):
+                    enriched_parts.append(ks["ingredients"][:1200])
+                if ks.get("steps"):
+                    enriched_parts.append(ks["steps"][:2000])
+                enriched_text = "\n\n".join(enriched_parts)
+                new_meta = dict(d.metadata or {})
+                new_meta.update({
+                    "doc_id": doc_id,
+                    "title": title,
+                    "source": source,
+                    "score": score
+                })
+                enriched_doc = Document(page_content=enriched_text, metadata=new_meta)
+            else:
+                # 找不到父文档时，保留原子块，至少补齐可用的元数据
+                new_meta = dict(d.metadata or {})
+                if doc_id:
+                    new_meta["doc_id"] = doc_id
+                enriched_doc = Document(page_content=child_text, metadata=new_meta)
+
+            key = enriched_doc.metadata.get("doc_id", f"__child_{id(enriched_doc)}")
+            prev = best_by_doc.get(key)
+            if prev is None or score > prev[0]:
+                best_by_doc[key] = (score, enriched_doc)
+
+        # 按分数降序返回
+        result = [v[1] for v in sorted(best_by_doc.values(), key=lambda x: x[0], reverse=True)]
+        # 控制返回数量不超过 rerank_top_n 或 top_k（根据是否启用重排）
+        limit = rerank_top_n if enable_rerank else top_k
+        return result[:limit]
+
+    def child_only_with_meta(docs: List[Document]) -> List[Document]:
+        """仅返回子块，但补齐 doc_id/title/source，并按父文档去重保留最高分的子块。"""
+        best_by_doc: Dict[str, Tuple[float, Document]] = {}
+        for d in docs:
+            score = 0.0
+            if isinstance(d.metadata, dict):
+                score = float(d.metadata.get("score", 0.0) or 0.0)
+            child_text = d.page_content or ""
+            doc_id = d.metadata.get("doc_id") if isinstance(d.metadata, dict) else None
+            if not doc_id:
+                doc_id = find_doc_id_by_child(child_text)
+            title = ""
+            source = ""
+            if doc_id:
+                meta = docid_to_meta.get(doc_id, {}) or {}
+                title = meta.get("title", "")
+                source = meta.get("source", "")
+            new_meta = dict(d.metadata or {})
+            if doc_id:
+                new_meta["doc_id"] = doc_id
+            if title:
+                new_meta["title"] = title
+            if source:
+                new_meta["source"] = source
+            new_meta["score"] = score
+            child_doc = Document(page_content=child_text, metadata=new_meta)
+            key = doc_id or f"__child_{id(child_doc)}"
+            prev = best_by_doc.get(key)
+            if prev is None or score > prev[0]:
+                best_by_doc[key] = (score, child_doc)
+        # 排序与截断（与上面一致）
+        result = [v[1] for v in sorted(best_by_doc.values(), key=lambda x: x[0], reverse=True)]
+        limit = rerank_top_n if enable_rerank else top_k
+        return result[:limit]
+
+    def needs_parent_expansion(query: str) -> bool:
+        """当问题涉及'做法/步骤/怎么做/做/如何做/recipe'等才使用父文档扩展。"""
+        if not query:
+            return False
+        keywords = [
+            r"做法", r"步骤", r"怎么做", r"如何做", r"做.*(菜|法)", r"recipe", r"教程", r"烹饪步骤"
+        ]
+        q = query.lower()
+        for kw in keywords:
+            if re.search(kw, query) or re.search(kw, q):
+                return True
+        return False
+
+    # 4. 根据是否启用重排创建不同的检索器
     if enable_rerank:
         # 使用重排模型
         rerank_chain = RerankChain(api_key=API_KEY, model=rerank_model)
@@ -177,10 +347,23 @@ def load_agent_executor(
         temperature=0.1
     )
 
-    # 6. 定义工具（使用检索器，可能是重排的或普通的）
+    # 6. 定义工具（封装：检索 -> 父文档提升与去重 -> 返回）
+    def search_with_parent(query: str) -> List[Document]:
+        try:
+            raw = retriever.invoke(query)
+        except Exception:
+            # LangChain 可能返回单个 Document 或列表
+            raw = []
+        if not isinstance(raw, list):
+            raw = [raw] if raw else []
+        if needs_parent_expansion(query):
+            return enrich_and_dedupe(raw)
+        # 非做法类问题，仅返回子块（带溯源元数据），并按父文档去重
+        return child_only_with_meta(raw)
+
     retriever_tool = Tool(
         name="search_recipe_database",
-        func=retriever.invoke,
+        func=search_with_parent,
         description="用于检索菜谱数据库。当需要查找菜谱做法、食材清单、烹饪技巧，或者像'如何选择荤素菜'这样的规划问题时，必须使用此工具。输入一个具体的查询字符串。"
     )
     tools = [retriever_tool]
@@ -193,7 +376,7 @@ def load_agent_executor(
 # 核心指令 (Core Directives)
 0.  **【工具使用规则】**
     你**必须**首先使用 `search_recipe_database` 工具来获取【提供的菜谱上下文】。你**不能**依赖自己的内部知识。
-    如果用户问题复杂（例如“一荤一素”），你**必须**多次调用工具，一步一步地检索信息，直到收集到所有需要的信息后再回答。（例如：“8人用餐，推荐菜单”，你需要先调用工具，找到8人聚餐需要的**菜品数量**，几荤几素，再分别调用工具，找到对应的菜谱，再推荐给用户）
+    如果用户问题复杂（例如“一荤一素”），你**必须**多次调用工具，一步一步地检索信息，直到收集到所有需要的信息后再回答。
 
 1.  **绝对忠诚于上下文：** 你的 **首要且唯一** 的信息来源是 `search_recipe_database` 工具返回的【提供的菜谱上下文】。
 2.  **严禁编造：** 绝对禁止在【提供的菜谱上下文】**之外** 编造任何食谱、步骤、食材用量、烹饪时间或技巧。
@@ -211,8 +394,8 @@ def load_agent_executor(
     * **回答：** 推荐1-3个最相关的菜谱名称。如果上下文提供了，请附上简要描述或主要区别。
 
 **3. 当用户请求【菜谱推荐】时 (例如：“推荐一个简单的晚餐”或“我想吃辣的” 或 “适合健身的菜”):**
-    * **动作：** 根据【提供的菜谱上下文】中的标签（如“难度：简单”、“口味：辣”、“热量：低卡”）来筛选。如果是很多人用餐，要考虑人数和菜数的关系来安排菜的数量。
-    * **回答：** 推荐符合条件的菜谱，并**必须**说明推荐的理由（例如：“为您推荐‘凉拌鸡丝’，根据资料，它的烹饪时间仅需15分钟，且热量较低”）。
+    * **动作：** 根据【提供的菜谱上下文】中的标签（如“难度：简单”、“口味：辣”、“热量：低卡”）来筛选。
+    * **回答：** 推荐1-3个符合条件的菜谱，并**必须**说明推荐的理由（例如：“为您推荐‘凉拌鸡丝’，根据资料，它的烹饪时间仅需15分钟，且热量较低”）。
 
 **4. 当用户询问【烹饪技巧】或【概念】时 (例如：“什么是‘焯水’？”)**
     * **动作：** 在【提供的菜谱上下文】中查找相关的定义、目的或步骤。
@@ -231,9 +414,6 @@ def load_agent_executor(
 **7. 当用户问题【超出烹饪范围】时 (例如：“今天天气怎么样？”或“你是谁？”):**
     * **动作：** 礼貌地拒绝，并重申你的身份。
     * **回答：** “我是一个AI烹饪助手航小厨，我的任务是帮您处理关于菜谱的问题。很抱歉，我无法回答烹饪之外的问题。”
-
-# 注意事项
-1. 在输出前，请检查答案是否完全基于【提供的菜谱上下文】，如果不是，请返回“根据我现有的菜谱资料库，我没有找到关于[用户问题]的确切信息”，不能自己综合上下文编造答案。
 
 # 输出格式 (Output Format)
 * **语气：** 友好、专业、耐心且可靠。

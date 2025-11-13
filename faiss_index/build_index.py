@@ -45,7 +45,7 @@ chunks = load_chunks_from_jsonl(file_path)  # 替换为你的文件路径
 # ----------------------------
 
 embedding_client = OpenAI(
-    api_key="sk-",  # 替换为你的实际 Key
+    api_key="",  # 替换为你的实际 Key
     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1"
 )
 
@@ -117,4 +117,4 @@ if not failed_indices:
 # print("FAISS 向量库构建完成！")
 
 # 可选：保存到本地，下次直接加载（避免重复嵌入）
-vectorstore.save_local("faiss_index2")
+vectorstore.save_local("faiss_index4")
