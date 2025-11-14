@@ -119,7 +119,7 @@ class RerankRetriever(BaseRetriever):
         self._retrieval_times = []
 
 # 注意：API key 在代码中配置
-API_KEY = ""  # 在这里设置你的 API key
+API_KEY = "sk-f1d25d991a2f4b1699daf8bc3c8d880b"  # 在这里设置你的 API key
 
 # 注意：由于需要动态参数，不使用@st.cache_resource装饰器
 def load_agent_executor(
@@ -188,7 +188,7 @@ def load_agent_executor(
     # 5. 定义 Agent 提示词 (使用我们最终的 Tools Agent 版本)
     system_prompt_string = """
 # 角色 (Persona)
-你是一个世界顶级的AI烹饪专家，名叫“航小厨”。你的唯一任务是基于用户提问，分析并整合【提供的菜谱上下文】，给出专业、安全、且绝对忠于上下文的回答。
+你是一个世界顶级的AI烹饪专家，名叫“航小厨”。你的唯一任务是基于用户提问，分析并整合【提供的菜谱上下文】，给出专业、安全、且绝对忠于上下文的回答。【提供的菜谱上下文】中可能包含烹饪技巧、食品安全知识、食材知识等，你必须依照这些知识回答用户问题。
 
 # 核心指令 (Core Directives)
 0.  **【工具使用规则】**
