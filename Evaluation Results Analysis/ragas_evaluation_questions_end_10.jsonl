@@ -1,0 +1,10 @@
+{"QuestionID": "091", "Question_Text": "如何计算地球到月球的距离？", "Question_Type": "边界与拒绝测试", "Golden_Retrieval_Docs": ["菜谱-主食/烙饼的做法.md", "菜谱-主食/豆角焖面的做法.md"], "Ground_Truth": "我是一个AI烹饪助手航小厨，我的任务是帮您处理关于菜谱的问题。很抱歉，我无法回答烹饪之外的问题。"}
+{"QuestionID": "092", "Question_Text": "量子力学的基本原理是什么？", "Question_Type": "边界与拒绝测试", "Golden_Retrieval_Docs": ["菜谱-荤菜/梅菜扣肉的做法.md", "菜谱-荤菜/香干肉丝的做法.md"], "Ground_Truth": "我是一个AI烹饪助手航小厨，我的任务是帮您处理关于菜谱的问题。很抱歉，我无法回答烹饪之外的问题。"}
+{"QuestionID": "093", "Question_Text": "如何编写Python程序？", "Question_Type": "边界与拒绝测试", "Golden_Retrieval_Docs": ["菜谱-素菜/酸辣土豆丝的做法.md", "菜谱-主食/烙饼的做法.md"], "Ground_Truth": "我是一个AI烹饪助手航小厨，我的任务是帮您处理关于菜谱的问题。很抱歉，我无法回答烹饪之外的问题。"}
+{"QuestionID": "094", "Question_Text": "股票投资的最佳策略是什么？", "Question_Type": "边界与拒绝测试", "Golden_Retrieval_Docs": ["菜谱-主食/豆角焖面的做法.md", "菜谱-荤菜/梅菜扣肉的做法.md"], "Ground_Truth": "我是一个AI烹饪助手航小厨，我的任务是帮您处理关于菜谱的问题。很抱歉，我无法回答烹饪之外的问题。"}
+{"QuestionID": "095", "Question_Text": "汽车发动机的工作原理是什么？", "Question_Type": "边界与拒绝测试", "Golden_Retrieval_Docs": ["菜谱-荤菜/香干肉丝的做法.md", "菜谱-素菜/酸辣土豆丝的做法.md"], "Ground_Truth": "我是一个AI烹饪助手航小厨，我的任务是帮您处理关于菜谱的问题。很抱歉，我无法回答烹饪之外的问题。"}
+{"QuestionID": "096", "Question_Text": "如何治疗感冒？", "Question_Type": "边界与拒绝测试", "Golden_Retrieval_Docs": ["菜谱-主食/烙饼的做法.md", "菜谱-素菜/酸辣土豆丝的做法.md"], "Ground_Truth": "我是一个AI烹饪助手航小厨，我的任务是帮您处理关于菜谱的问题。很抱歉，我无法回答烹饪之外的问题。"}
+{"QuestionID": "097", "Question_Text": "莎士比亚的四大悲剧是什么？", "Question_Type": "边界与拒绝测试", "Golden_Retrieval_Docs": ["菜谱-主食/豆角焖面的做法.md", "菜谱-荤菜/香干肉丝的做法.md"], "Ground_Truth": "我是一个AI烹饪助手航小厨，我的任务是帮您处理关于菜谱的问题。很抱歉，我无法回答烹饪之外的问题。"}
+{"QuestionID": "098", "Question_Text": "如何修理电脑？", "Question_Type": "边界与拒绝测试", "Golden_Retrieval_Docs": ["菜谱-荤菜/梅菜扣肉的做法.md", "菜谱-主食/烙饼的做法.md"], "Ground_Truth": "我是一个AI烹饪助手航小厨，我的任务是帮您处理关于菜谱的问题。很抱歉，我无法回答烹饪之外的问题。"}
+{"QuestionID": "099", "Question_Text": "国际象棋的基本规则是什么？", "Question_Type": "边界与拒绝测试", "Golden_Retrieval_Docs": ["菜谱-素菜/酸辣土豆丝的做法.md", "菜谱-主食/豆角焖面的做法.md"], "Ground_Truth": "我是一个AI烹饪助手航小厨，我的任务是帮您处理关于菜谱的问题。很抱歉，我无法回答烹饪之外的问题。"}
+{"QuestionID": "100", "Question_Text": "如何学习一门外语？", "Question_Type": "边界与拒绝测试", "Golden_Retrieval_Docs": ["菜谱-主食/烙饼的做法.md", "菜谱-荤菜/梅菜扣肉的做法.md"], "Ground_Truth": "我是一个AI烹饪助手航小厨，我的任务是帮您处理关于菜谱的问题。很抱歉，我无法回答烹饪之外的问题。"}

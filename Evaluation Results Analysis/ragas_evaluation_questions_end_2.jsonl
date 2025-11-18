@@ -1,0 +1,10 @@
+{"QuestionID": "011", "Question_Text": "小炒黄牛肉需要哪些主要食材？", "Question_Type": "特定信息提取", "Golden_Retrieval_Docs": ["菜谱-荤菜/小炒黄牛肉的做法.md"], "Ground_Truth": "主要食材包括：牛里脊、芹菜、小米椒、野山椒、香菜"}
+{"QuestionID": "012", "Question_Text": "鳊鱼炖豆腐中鳊鱼如何处理？", "Question_Type": "特定信息提取", "Golden_Retrieval_Docs": ["菜谱-水产/鳊鱼炖豆腐的做法.md"], "Ground_Truth": "鳊鱼可以让摊主帮忙处理好，或者使用如下方法处理：\n改刀：将鳊鱼进行适当的切割（如对半切或切段），以便入味和烹饪均匀。\n腌制：在鱼身上放上姜片和料酒，腌制5-10分钟，以去腥增香。\n擦干水分：腌制完成后，用厨房纸将鱼表面的水分彻底擦干，这是防止煎鱼时溅油和粘锅的关键步骤。\n煎制：热锅加油（可加一点盐防粘），将鱼放入锅中，用中小火将两面各煎2-4分钟，至表面微黄定型。"}
+{"QuestionID": "013", "Question_Text": "可乐桶需要哪些主要食材和工具？", "Question_Type": "特定信息提取", "Golden_Retrieval_Docs": ["菜谱-饮料/可乐桶的做法.md"], "Ground_Truth": "主要食材：波旁威士忌、可口可乐、冰块、柠檬（可选，提升口感用）;所需工具:\n手动压汁器：用于挤压柠檬取汁。\n大型玻璃杯或铁皮酒桶：容量建议约 1 升，用于盛装饮品"}
+{"QuestionID": "014", "Question_Text": "茭白炒肉需要用到哪些主要食材？", "Question_Type": "特定信息提取", "Golden_Retrieval_Docs": ["菜谱-荤菜/茭白炒肉的做法.md"], "Ground_Truth": "主要食材包括：茭白、瘦肉、淀粉、食用油、鸡精"}
+{"QuestionID": "015", "Question_Text": "上汤娃娃菜的预估烹饪难度是多少？", "Question_Type": "特定信息提取", "Golden_Retrieval_Docs": ["菜谱-素菜/上汤娃娃菜的做法.md"], "Ground_Truth": "上汤娃娃菜的烹饪难度：3星（共5星）"}
+{"QuestionID": "016", "Question_Text": "炒河粉需要准备哪些主要食材？", "Question_Type": "特定信息提取", "Golden_Retrieval_Docs": ["菜谱-主食/炒河粉的做法.md"], "Ground_Truth": "主要食材包括：河粉、豆芽、鸡蛋、瘦肉、生抽、老抽、食用油、葱花"}
+{"QuestionID": "017", "Question_Text": "红烧鱼头要做多久？", "Question_Type": "特定信息提取", "Golden_Retrieval_Docs": ["菜谱-水产/红烧鱼头的做法.md"], "Ground_Truth": "腌制时间：1-2小时（用于鱼头提前入味）\n实际烹饪时间：\n翻炒辅料（姜片、葱段、蒜碎等）：约3-5分钟\n翻炒鱼头：2-3分钟\n慢焖入味：约15-20分钟（关键步骤，需中火慢炖至汤汁减少一半）\n大火收汁：约5-8分钟（至汤汁剩余1/3时关火）\n总计烹饪时间：约 25-30分钟（不含腌制时间）"}
+{"QuestionID": "018", "Question_Text": "洋葱炒猪肉一般需要多长时间完成？", "Question_Type": "特定信息提取", "Golden_Retrieval_Docs": ["菜谱-荤菜/洋葱炒猪肉的做法.md"], "Ground_Truth": "15分钟"}
+{"QuestionID": "019", "Question_Text": "蛋包饭的主要食材有哪些？", "Question_Type": "特定信息提取", "Golden_Retrieval_Docs": ["菜谱-主食/蛋包饭的做法.md"], "Ground_Truth": "主要食材：鸡蛋、米饭、番茄酱、食用油、盐、胡椒粉"}
+{"QuestionID": "020", "Question_Text": "蒲烧茄子的预估烹饪难度是5星吗？", "Question_Type": "特定信息提取", "Golden_Retrieval_Docs": ["菜谱-素菜/蒲烧茄子的做法.md"], "Ground_Truth": "蒲烧茄子的预估烹饪难度是 3星，并非5星。"}
