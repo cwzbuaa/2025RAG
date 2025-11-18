@@ -26,7 +26,7 @@ from agent_backend import load_agent_executor
 
 # =============== 配置部分 ===============
 # 统一API_KEY（与agent_backend.py保持一致）
-API_KEY = "sk-e1af1eb4e94c410396b4039cc5d28963"  # 必须与agent_backend.py中的API_KEY一致
+API_KEY = "sk-"  # 必须与agent_backend.py中的API_KEY一致
 BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 
 # 评估配置
