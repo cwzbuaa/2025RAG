@@ -119,7 +119,7 @@ class RerankRetriever(BaseRetriever):
         self._retrieval_times = []
 
 # 注意：API key 在代码中配置
-API_KEY = ""  # 在这里设置你的 API key
+API_KEY = "sk-20f1731cef9343c0978ad7774724d00f"  # 在这里设置你的 API key
 
 # 注意：由于需要动态参数，不使用@st.cache_resource装饰器
 def load_agent_executor(
