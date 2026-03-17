@@ -8,7 +8,9 @@ accelerate>=0.30.0
 # 训练框架
 llama-factory>=0.8.0
 
-# 4090 必装插件 (针对 Ada 架构优化)
+# RAG 检索器依赖
+faiss-cpu
+faiss-gpu  # 可选，需要 CUDA 支持
 
 
 # 数据处理与 Web 界面
