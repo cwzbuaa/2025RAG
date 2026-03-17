@@ -1,0 +1,9 @@
+{
+  "sft_data_merged": {
+    "file_name": "sft_data_merged.jsonl",
+    "columns": {
+      "prompt": "instruction",
+      "response": "output"
+    }
+  }
+}

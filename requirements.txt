@@ -1,0 +1,21 @@
+# 核心依赖 - 明确指定版本以适配 4090
+torch>=2.1.0
+torchvision
+torchaudio
+transformers>=4.40.0
+accelerate>=0.30.0
+
+# 训练框架
+llama-factory>=0.8.0
+
+# 4090 必装插件 (针对 Ada 架构优化)
+
+
+# 数据处理与 Web 界面
+gradio>=4.0.0
+numpy>=1.24.0
+pandas>=2.0.0
+requests>=2.31.0
+tqdm>=4.66.0
+einops
+tiktoken

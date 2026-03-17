@@ -1,0 +1,42 @@
+
+# 基本设置
+model_name_or_path: E:/models/qwen2_5_7b
+output_dir: output/recipe_sft
+
+# 训练设置
+stage: sft
+do_train: true
+dataset: recipe_sft_data
+dataset_dir: data
+template: qwen
+cutoff_len: 2048
+overwrite_output_dir: true
+preprocessing_num_workers: 4
+
+# 训练参数
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 4
+learning_rate: 5e-5
+num_train_epochs: 3.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+fp16: false
+
+# LoRA设置
+finetuning_type: lora
+lora_rank: 8
+lora_alpha: 16
+lora_dropout: 0.1
+lora_target: all
+
+# 日志与保存设置
+logging_steps: 5
+save_steps: 100
+plot_loss: true
+
+# 评估设置
+val_size: 0.1
+per_device_eval_batch_size: 4
+eval_strategy: steps
+eval_steps: 100
