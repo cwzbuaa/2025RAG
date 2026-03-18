@@ -1,0 +1,10 @@
+{"QuestionID": "081", "Question_Text": "这个菜怎么做？", "Question_Type": "模糊与歧义查询", "Golden_Retrieval_Docs": ["菜谱-荤菜/芥末罗氏虾的做法.md"], "Ground_Truth": "问题表述过于模糊，没有指定具体是哪个菜。需要澄清具体菜名。文档中提供了芥末罗氏虾的做法，主要食材包括罗氏虾、蒜、青芥末。"}
+{"QuestionID": "082", "Question_Text": "我想吃点好的。", "Question_Type": "模糊与歧义查询", "Golden_Retrieval_Docs": ["空.md"], "Ground_Truth": "为了帮您找到最合适的菜谱，您能告诉我您今天的口味偏好吗？比如您想吃酸甜、香辣，还是清淡一点的？另外，您大概有多少烹饪时间呢？"}
+{"QuestionID": "083", "Question_Text": "怎么加热？", "Question_Type": "模糊与歧义查询", "Golden_Retrieval_Docs": ["搭建环境/学习煮.md"], "Ground_Truth": "问题表述不完整，需要澄清具体加热什么食物或使用什么器具。文档中提供了基本的加热方法：倒水入锅，开火将锅放于火上加热，水开后放入食材。加热时盖上锅盖可以加快受热但可能溢锅，若即将溢锅可关小火并打开锅盖。"}
+{"QuestionID": "084", "Question_Text": "想吃一顿丰盛的晚餐。", "Question_Type": "模糊与歧义查询", "Golden_Retrieval_Docs": ["x.md", "x.md"], "Ground_Truth": "为了帮您规划一顿丰盛的晚餐，我需要了解一些细节：\n您偏好什么口味？（例如：香辣、酸甜、清淡、咸鲜）\n有没有特别想吃的食材或菜系？（比如川菜、粤菜、家常菜等）\n您希望这顿晚餐包含几道菜？（例如：一荤一素、两荤一素、三菜一汤等）\n您大概有多少烹饪时间？（比如30分钟内、1小时左右、不限时）\n请告诉我这些信息，我会根据您的需求推荐合适的菜谱组合！"}
+{"QuestionID": "085", "Question_Text": "需要多少糖？", "Question_Type": "模糊与歧义查询", "Golden_Retrieval_Docs": ["菜谱-甜品/烤箱版巴斯克芝士蛋糕的做法.md"], "Ground_Truth": "问题没有指定具体菜品，需要澄清是哪个菜需要糖。文档中烤箱版巴斯克芝士蛋糕需要白砂糖60g。"}
+{"QuestionID": "086", "Question_Text": "饭后甜点。", "Question_Type": "模糊与歧义查询", "Golden_Retrieval_Docs": ["x.md"], "Ground_Truth": "根据菜谱数据库，为您推荐以下几款适合的饭后甜点：酸奶意式奶冻、英式司康、烤蛋挞。"}
+{"QuestionID": "087", "Question_Text": "那个虾的菜需要什么？", "Question_Type": "模糊与歧义查询", "Golden_Retrieval_Docs": ["菜谱-荤菜/芥末罗氏虾的做法.md"], "Ground_Truth": "问题表述不够具体，需要澄清是需要食材还是步骤。文档中芥末罗氏虾的主要食材包括：罗氏虾、蒜、青芥末。"}
+{"QuestionID": "088", "Question_Text": "蛋糕要烤多久？", "Question_Type": "模糊与歧义查询", "Golden_Retrieval_Docs": ["菜谱-甜品/烤箱版巴斯克芝士蛋糕的做法.md"], "Ground_Truth": "问题没有指定具体是哪种蛋糕，需要澄清蛋糕名称。文档中只提供了烤箱版巴斯克芝士蛋糕的食材信息，没有具体的烘烤时间说明。"}
+{"QuestionID": "089", "Question_Text": "怎么处理鸭子？", "Question_Type": "模糊与歧义查询", "Golden_Retrieval_Docs": ["菜谱-荤菜/湘祁米夫鸭的做法.md"], "Ground_Truth": "问题表述不完整，需要澄清是哪个鸭子的菜以及具体处理步骤。文档中湘祁米夫鸭要求鸭子必须新鲜现杀的，使用糯米粉和粘米粉，但没有详细处理步骤。"}
+{"QuestionID": "090", "Question_Text": "那个用蒜的菜怎么做？", "Question_Type": "模糊与歧义查询", "Golden_Retrieval_Docs": ["菜谱-荤菜/芥末罗氏虾的做法.md", "菜谱-主食/炒凉粉的做法.md"], "Ground_Truth": "问题表述模糊，需要澄清具体是哪个用蒜的菜。文档中芥末罗氏虾和炒凉粉都使用大蒜作为食材，需要明确具体菜品名称。"}
